@@ -2,14 +2,13 @@ import cassiopeia as cass
 from cassiopeia import Summoner, Match
 from cassiopeia.data import Season, Queue
 from collections import Counter
+import os
 
-
-# api_key = os.environ['api-key']
-def main():
-    cass.set_riot_api_key("APIKEY")  # This overrides the value set in your configuration/settings.
+def main(summoner_name):
+    cass.set_riot_api_key(os.environ['riot_api'])  # This overrides the value set in your configuration/settings.
     cass.set_default_region("NA")
-    summoner = Summoner(name="truestunna", region="NA")
-    summoner = cass.get_summoner(name="truestunna")
+    summoner = Summoner(name=summoner_name, region="NA")
+    summoner = cass.get_summoner(name=summoner_name)
     print("{name} is a level {level} summoner on the {region} server.".format(name=summoner.name,
                                                                             level=summoner.level,
                                                                             region=summoner.region))
@@ -32,7 +31,8 @@ def main():
     match = match_history[0]
     print('Match ID:', match.id)
     p = match.participants[summoner]
-    msg = (f"Huge Nerd {p.summoner.name} wasted {match.duration} minutes playing as {p.champion.name} with {p.stats.kills} kills and died {p.stats.deaths} while some how only doing {p.stats.total_damage_dealt_to_champions} damage to champions")
+    msg = (f"Huge Nerd {p.summoner.name} wasted {match.duration} minutes playing as {p.champion.name} with {p.stats.kills} kills and died {p.stats.deaths} times while some how only doing {p.stats.total_damage_dealt_to_champions} damage to champions")
     return msg
+
 if __name__ == "__main__":
     main.py

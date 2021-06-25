@@ -1,18 +1,25 @@
-import discord
+from discord.ext import commands
+from summoners import summoners
 from lol import main
-TOKEN = "Token"
+import os
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='!')
 
-@client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content == 'lol!':
-        msg = main()
-        await message.channel.send(msg)
-client.run(TOKEN)
+    if "dornbob" in message.author.name:
+        await message.channel.send("Nathan you're a filthy slut and I love it")
+    if message.content == "hello":
+        await message.channel.send("pies are better than cakes. change my mind.")
+
+    await bot.process_commands(message)
+
+
+@bot.command()
+async def lol(ctx, summoner_name):
+    if summoner_name in summoners.keys():
+        summoner_name = summoners[summoner_name]
+    msg = main(summoner_name)
+    await ctx.channel.send(msg)
+
+bot.run(os.environ["discord_api"])
